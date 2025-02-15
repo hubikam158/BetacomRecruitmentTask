@@ -4,6 +4,7 @@ import com.betacom.rekrutacja.dto.UserRequest;
 import com.betacom.rekrutacja.entity.User;
 import com.betacom.rekrutacja.error.UserAlreadyExistsException;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class UserService {
         return userRepository.findByLogin(login);
     }
 
+    @SneakyThrows
     public void addUser(UserRequest request) {
 
         if (nonNull(getUserByLogin(request.getLogin()))) {

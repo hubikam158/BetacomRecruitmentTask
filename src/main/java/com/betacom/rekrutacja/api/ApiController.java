@@ -6,6 +6,7 @@ import com.betacom.rekrutacja.dto.LoginResponse;
 import com.betacom.rekrutacja.dto.UserRequest;
 import com.betacom.rekrutacja.entity.Item;
 import com.betacom.rekrutacja.entity.User;
+import com.betacom.rekrutacja.error.ErrorResponse;
 import com.betacom.rekrutacja.security.TokenService;
 import com.betacom.rekrutacja.utils.Descriptions;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,8 +42,10 @@ public class ApiController {
     private AuthenticationManager authenticationManager;
 
     @Operation(description = Descriptions.AUTHENTICATING)
-    @ApiResponse(responseCode = "200",
-            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))}),
+            @ApiResponse(responseCode = "401", description = Descriptions.UNSUCCESSFUL_AUTHENTICATION, content = @Content) })
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
     public LoginResponse getToken(@RequestBody UserRequest request){
@@ -54,7 +57,10 @@ public class ApiController {
     }
 
     @Operation(description = Descriptions.REGISTERING)
-    @ApiResponse(responseCode = "204", description = Descriptions.SUCCESSFUL_REGISTERING, content = @Content)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = Descriptions.SUCCESSFUL_REGISTERING, content = @Content),
+            @ApiResponse(responseCode = "409", description = Descriptions.USER_ALREADY_EXISTS,
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}) })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping("/register")
     public void register(@RequestBody UserRequest request) {
@@ -83,9 +89,6 @@ public class ApiController {
     @GetMapping("/items")
     public List<ItemGetResponse> getItems(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userService.getUserByLogin(userDetails.getUsername());
-        log.info("items for user: {}", user.getItems());
         return itemService.getItemsByUser(user);
     }
 }
-
-// @WithMockUser(roles = ADMIN_ROLE, username = TEST_USER, password = TEST_USER) - w integracyjnym teście

@@ -1,5 +1,7 @@
 package com.betacom.rekrutacja.security;
 
+import com.betacom.rekrutacja.utils.Descriptions;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +42,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .authenticationManager(authenticationManager)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(
+                        (request, response, exception) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, Descriptions.UNSUCCESSFUL_AUTHENTICATION)))
                 .build();
     }
 

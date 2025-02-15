@@ -4,6 +4,7 @@ public class Descriptions {
 
     public static final String SUCCESSFUL_REGISTERING = "Registering successful.";
     public static final String SUCCESSFUL_CREATING = "Item created successfully.";
+    public static final String USER_ALREADY_EXISTS = "User with chosen login already exists.";
     public static final String UNSUCCESSFUL_AUTHENTICATION = "You have not provided an authentication token, " +
             "the one provided has expired, was revoked or is not authentic.";
 
