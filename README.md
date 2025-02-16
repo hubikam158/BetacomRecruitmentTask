@@ -24,5 +24,5 @@ In Swagger paste: /api-docs and click "Explore" to enable using the Api.
 You can also use the Api through Postman.
 
 ### Running tests
-Test are not perfectly made. Before you run them, please paste a valid token to field "token" inside ApiControllerIntegrationTest.java.
+Tests are not done perfectly. Before you run them, please paste a valid token to field "token" inside ApiControllerIntegrationTest.java.
 After testing you may be willing to delete all generated testUsers and testItems from database.
